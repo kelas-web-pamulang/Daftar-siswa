@@ -14,7 +14,15 @@
         ini_set('display_errors', '1');
         ini_set('display_startup_errors', '1');
         error_reporting(E_ALL);
+        require 'vendor/autoload.php';
 
+        \Sentry\init([
+            'dsn' => 'https://1e4fcb86d5f59b0483988c408869dece@o4507427977297920.ingest.us.sentry.io/4507427981295616',
+            // Specify a fixed sample rate
+            'traces_sample_rate' => 1.0,
+            // Set a sampling rate for profiling - this is relative to traces_sample_rate
+            'profiles_sample_rate' => 1.0,
+          ]);
         require_once 'config_db.php';
 
         $db = new ConfigDB();
@@ -33,7 +41,7 @@
             $status = $_POST['status'];
             $id_wali = $_POST['id_wali'];
 
-            $updateData = [
+            $data = [
                 'nama_siswa' => $nama_siswa,
                 'nis' => $nis,
                 'tanggal_daftar' => $tanggal_daftar,
@@ -41,7 +49,7 @@
                 'id_wali' => $id_wali
             ];
 
-            if ($db->update('pendaftaran', $updateData, $id)) {
+            if ($db->update('pendaftaran', $data, $id)) {
                 echo "<div class='alert alert-success mt-3' role='alert'>Data updated successfully</div>";
             } else {
                 echo "<div class='alert alert-danger mt-3' role='alert'>Error: " . $conn->error . "</div>";
@@ -74,7 +82,7 @@
             </div>
             <div class="form-group">
                 <label for="status">Status</label>
-                <input type="text" class="form-control" id="status" name="status" placeholder="Masukkan Status" required value="<?php echo $data['status']; ?>">
+                <input type="status" class="form-control" id="status" name="status" placeholder="Masukkan Status" required value="<?php echo $data['status']; ?>">
             </div>
             <div class="form-group">
                 <label for="waliwurid">Wali</label>

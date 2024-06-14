@@ -14,7 +14,15 @@
         ini_set('display_errors', '1');
         ini_set('display_startup_errors', '1');
         error_reporting(E_ALL);
+        require 'vendor/autoload.php';
 
+        \Sentry\init([
+            'dsn' => 'https://1e4fcb86d5f59b0483988c408869dece@o4507427977297920.ingest.us.sentry.io/4507427981295616',
+            // Specify a fixed sample rate
+            'traces_sample_rate' => 1.0,
+            // Set a sampling rate for profiling - this is relative to traces_sample_rate
+            'profiles_sample_rate' => 1.0,
+          ]);
         require_once 'config_db.php';
 
         $db = new ConfigDB();
